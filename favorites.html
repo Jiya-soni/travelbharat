@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelBharat - My Favorites</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+  :root {
+    --color-indigo: #1B2A45;
+    --color-marigold: #E0913C;
+    --color-cream: #FBF6EC;
+    --color-text-dark: #2A2418;
+    --color-text-light: #756C57;
+    --color-line: #DFD5BE;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-text-dark);
+  }
+
+  .page-header {
+    background-color: var(--color-indigo);
+    color: var(--color-cream);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .logo span {
+    color: var(--color-marigold);
+  }
+
+  .back-link {
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+    opacity: 0.85;
+  }
+
+  .content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .content h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .content p.subtitle {
+    color: var(--color-text-light);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .place-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+  }
+
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .place-card {
+    background-color: white;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Work Sans', sans-serif;
+    overflow: hidden;
+    padding: 0;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: cardIn 0.4s ease forwards;
+    position: relative;
+  }
+
+  .place-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px -12px rgba(27,42,69,0.25);
+  }
+
+  .place-card-band {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .place-card-icon {
+    font-size: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .place-card-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    color: white;
+    background: rgba(0,0,0,0.22);
+    padding: 4px 9px;
+    border-radius: 999px;
+    z-index: 1;
+  }
+
+  .remove-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.28);
+    color: #E0913C;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .place-card-body {
+    padding: 14px 16px 16px 16px;
+  }
+
+  .place-card .place-name {
+    font-weight: 600;
+    font-size: 15px;
+    font-family: 'Fraunces', serif;
+  }
+
+  .place-card .place-info {
+    font-size: 12px;
+    color: var(--color-text-light);
+    margin-top: 4px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--color-text-light);
+  }
+
+  .empty-state a {
+    color: var(--color-marigold);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div class="logo">Travel<span>Bharat</span></div>
+    <a href="explore.html" class="back-link">&larr; Back to Explore</a>
+  </div>
+
+  <div class="content">
+    <h1>My Favorites</h1>
+    <p class="subtitle" id="status-message">Loading your saved places...</p>
+
+    <div class="place-grid" id="favorites-grid"></div>
+  </div>
+
+<script>
+
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+  if (!loggedInUser) {
+    window.location.href = "login.html";
+  }
+
+  function categoryIcon(category) {
+    if (category === "Heritage") return "&#127963;&#65039;";
+    if (category === "Nature") return "&#127807;";
+    if (category === "Religious") return "&#128717;";
+    if (category === "Adventure") return "&#9968;&#65039;";
+    return "&#128205;";
+  }
+
+  function categoryColor(category) {
+    if (category === "Heritage") return "#A87C3C";
+    if (category === "Nature") return "#2E7D5B";
+    if (category === "Religious") return "#6B4C8E";
+    if (category === "Adventure") return "#B5533C";
+    return "#4A7A8C";
+  }
+
+  async function loadFavorites() {
+    try {
+      const response = await fetch("http://localhost:5050/api/users/" + loggedInUser.id + "/favorites/full");
+      const places = await response.json();
+
+      const grid = document.getElementById('favorites-grid');
+      grid.innerHTML = "";
+
+      if (places.length === 0) {
+        document.getElementById('status-message').innerText = "";
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            You haven't saved any places yet.<br>
+            <a href="explore.html">Start exploring &rarr;</a>
+          </div>
+        `;
+        return;
+      }
+
+      document.getElementById('status-message').innerText = places.length + " saved place" + (places.length === 1 ? "" : "s");
+
+      places.forEach(function (place, index) {
+        const color = categoryColor(place.category);
+        grid.innerHTML += `
+          <div class="place-card" style="animation-delay:${index * 0.03}s" onclick="goToPlace('${place.state}', '${place.name}')">
+            <div class="place-card-band" style="background: linear-gradient(135deg, ${color}, #121D33);">
+              <span class="place-card-badge">${place.category}</span>
+              <button class="remove-heart" onclick="event.stopPropagation(); removeFavorite('${place._id}')">&#9829;</button>
+              <span class="place-card-icon">${categoryIcon(place.category)}</span>
+            </div>
+            <div class="place-card-body">
+              <div class="place-name">${place.name}</div>
+              <div class="place-info">${place.city}, ${place.state}</div>
+            </div>
+          </div>
+        `;
+      });
+
+    } catch (error) {
+      document.getElementById('status-message').innerText = "Couldn't load favorites. Is the server running?";
+      console.log("Error:", error);
+    }
+  }
+
+  async function removeFavorite(placeId) {
+    try {
+      await fetch("http://localhost:5050/api/users/" + loggedInUser.id + "/favorites/" + placeId, {
+        method: "POST"
+      });
+      loadFavorites(); // refresh the grid so the removed card disappears
+    } catch (error) {
+      console.log("Error removing favorite:", error);
+    }
+  }
+
+  function goToPlace(stateName, placeName) {
+    // Sends the person to explore.html with info about which place to open
+    window.location.href = "explore.html?state=" + encodeURIComponent(stateName) + "&place=" + encodeURIComponent(placeName);
+  }
+
+  loadFavorites();
+
+</script>
+
+</body>
+</html>

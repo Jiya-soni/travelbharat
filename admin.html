@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelBharat - Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --color-indigo: #1B2A45;
+    --color-marigold: #E0913C;
+    --color-cream: #FBF6EC;
+    --color-text-dark: #2A2418;
+    --color-text-light: #756C57;
+    --color-line: #DFD5BE;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-text-dark);
+  }
+
+  .page-header {
+    background-color: var(--color-indigo);
+    color: var(--color-cream);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .back-link {
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+    opacity: 0.85;
+    white-space: nowrap;
+  }
+
+  .signout-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .logo span {
+    color: var(--color-marigold);
+  }
+
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .content h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+
+  .content p.subtitle {
+    color: var(--color-text-light);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* Lets the table scroll sideways on narrow screens instead of
+     squishing every column unreadably small */
+  .table-scroll-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+  }
+
+  table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    background: white;
+  }
+
+  th {
+    background: var(--color-indigo);
+    color: white;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-top: 1px solid var(--color-line);
+    white-space: nowrap;
+  }
+
+  tr:hover td {
+    background: #FBF6EC;
+  }
+
+  /* ---- Add Place form ---- */
+  .add-form-box {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .add-form-box h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .form-grid.full-width {
+    grid-template-columns: 1fr;
+  }
+
+  .field-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text-light);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .field-label + input,
+  .field-label + select,
+  .field-label + textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    background: white;
+  }
+
+  .field-label + input:focus,
+  .field-label + select:focus,
+  .field-label + textarea:focus {
+    outline: none;
+    border-color: var(--color-marigold);
+  }
+
+  .save-button {
+    background: var(--color-indigo);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .save-button:hover {
+    background: #101a2e;
+  }
+
+  .form-message {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .form-message.good { color: #3E7C5A; }
+  .form-message.bad { color: #B5533C; }
+
+  .delete-button {
+    background: none;
+    border: 1px solid #D9A99A;
+    color: #B5533C;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  .delete-button:hover {
+    background: #B5533C;
+    color: white;
+  }
+
+  .edit-button {
+    background: none;
+    border: 1px solid var(--color-line);
+    color: var(--color-text-dark);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+    margin-right: 6px;
+  }
+
+  .edit-button:hover {
+    border-color: var(--color-marigold);
+  }
+
+  /* ---- Edit modal ---- */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(18,29,51,0.55);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal-box {
+    background: var(--color-cream);
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modal-box h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .cancel-button {
+    background: none;
+    border: 1px solid var(--color-line);
+    color: var(--color-text-dark);
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ===============================================
+     RESPONSIVE - TABLET (max-width: 720px)
+     =============================================== */
+  @media (max-width: 720px) {
+    .content {
+      padding: 24px 20px;
+    }
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .add-form-box {
+      padding: 20px;
+    }
+    .modal-box {
+      padding: 22px;
+      max-height: 90vh;
+    }
+    table {
+      min-width: 480px;
+    }
+  }
+
+  /* ===============================================
+     RESPONSIVE - PHONE (max-width: 480px)
+     =============================================== */
+  @media (max-width: 480px) {
+    .page-header {
+      padding: 14px 20px;
+    }
+    .logo {
+      font-size: 17px;
+    }
+    .header-actions {
+      gap: 10px;
+    }
+    .back-link {
+      font-size: 12px;
+    }
+    .signout-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .content h1 {
+      font-size: 21px;
+    }
+    .add-form-box h2, .modal-box h2 {
+      font-size: 16px;
+    }
+    th, td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .edit-button, .delete-button {
+      padding: 4px 9px;
+      font-size: 11px;
+      margin-right: 4px;
+    }
+    .modal-actions {
+      flex-direction: column;
+    }
+    .modal-actions button {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div class="logo">Travel<span>Bharat</span> <span style="font-size:13px; opacity:0.7;">Admin</span></div>
+    <div class="header-actions">
+      <a href="explore.html" class="back-link">&larr; Back to Site</a>
+      <button onclick="signOut()" class="signout-btn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>All Places</h1>
+    <p class="subtitle" id="status-message">Loading places...</p>
+
+    <div class="add-form-box">
+      <h2>Add New Place</h2>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Place Name</label>
+          <input type="text" id="new-name" placeholder="e.g. Mehrangarh Fort">
+        </div>
+        <div>
+          <label class="field-label">State</label>
+          <input type="text" id="new-state" placeholder="e.g. Rajasthan">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">City</label>
+          <input type="text" id="new-city" placeholder="e.g. Jodhpur">
+        </div>
+        <div>
+          <label class="field-label">Category</label>
+          <select id="new-category">
+            <option value="Heritage">Heritage</option>
+            <option value="Nature">Nature</option>
+            <option value="Religious">Religious</option>
+            <option value="Adventure">Adventure</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Description</label>
+          <textarea id="new-description" rows="2" placeholder="A short description..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Timings</label>
+          <input type="text" id="new-timings" placeholder="e.g. 9:00 AM - 5:00 PM">
+        </div>
+        <div>
+          <label class="field-label">Entry Fee</label>
+          <input type="text" id="new-entryfee" placeholder="e.g. Free, or ₹50">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Best Time to Visit</label>
+          <input type="text" id="new-besttime" placeholder="e.g. October to March">
+        </div>
+        <div>
+          <label class="field-label">Famous Food</label>
+          <input type="text" id="new-food" placeholder="e.g. Local sweets, thali">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Nearby Attractions</label>
+          <input type="text" id="new-nearby" placeholder="e.g. Fort, Lake, Market">
+        </div>
+        <div>
+          <label class="field-label">How to Reach</label>
+          <input type="text" id="new-transport" placeholder="e.g. Nearest airport...">
+        </div>
+      </div>
+
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 1 (optional - main photo)</label>
+          <input type="text" id="new-image1" placeholder="https://images.unsplash.com/...">
+        </div>
+      </div>
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 2 (optional)</label>
+          <input type="text" id="new-image2" placeholder="https://images.unsplash.com/...">
+        </div>
+      </div>
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 3 (optional)</label>
+          <input type="text" id="new-image3" placeholder="https://images.unsplash.com/...">
+        </div>
+      </div>
+
+      <button class="save-button" onclick="createPlace()">Add Place</button>
+      <p class="form-message" id="form-message"></p>
+    </div>
+
+    <div class="table-scroll-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="places-table-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL - hidden until an Edit button is clicked -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-box">
+      <h2>Edit Place</h2>
+
+      <input type="hidden" id="edit-id">
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Place Name</label>
+          <input type="text" id="edit-name">
+        </div>
+        <div>
+          <label class="field-label">State</label>
+          <input type="text" id="edit-state">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">City</label>
+          <input type="text" id="edit-city">
+        </div>
+        <div>
+          <label class="field-label">Category</label>
+          <select id="edit-category">
+            <option value="Heritage">Heritage</option>
+            <option value="Nature">Nature</option>
+            <option value="Religious">Religious</option>
+            <option value="Adventure">Adventure</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Description</label>
+          <textarea id="edit-description" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Timings</label>
+          <input type="text" id="edit-timings">
+        </div>
+        <div>
+          <label class="field-label">Entry Fee</label>
+          <input type="text" id="edit-entryfee">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Best Time to Visit</label>
+          <input type="text" id="edit-besttime">
+        </div>
+        <div>
+          <label class="field-label">Famous Food</label>
+          <input type="text" id="edit-food">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label class="field-label">Nearby Attractions</label>
+          <input type="text" id="edit-nearby">
+        </div>
+        <div>
+          <label class="field-label">How to Reach</label>
+          <input type="text" id="edit-transport">
+        </div>
+      </div>
+
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 1</label>
+          <input type="text" id="edit-image1">
+        </div>
+      </div>
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 2</label>
+          <input type="text" id="edit-image2">
+        </div>
+      </div>
+      <div class="form-grid full-width">
+        <div>
+          <label class="field-label">Photo URL 3</label>
+          <input type="text" id="edit-image3">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="save-button" onclick="saveEdit()">Save Changes</button>
+        <button class="cancel-button" onclick="closeEditModal()">Cancel</button>
+      </div>
+      <p class="form-message" id="edit-message"></p>
+    </div>
+  </div>
+
+<script>
+
+  // Check if someone is even logged in, and if they're an admin.
+  // If not, kick them out immediately - before showing any data.
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+  if (!loggedInUser || !loggedInUser.isAdmin) {
+    alert("You don't have permission to view this page.");
+    window.location.href = "login.html";
+  }
+
+  function signOut() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+  }
+
+  // Keeps the full list in memory, so opening Edit doesn't need a new server call
+  let allPlacesCache = [];
+
+  async function loadAllPlaces() {
+    try {
+      const response = await fetch("http://localhost:5050/api/places");
+      const places = await response.json();
+      allPlacesCache = places;
+
+      document.getElementById('status-message').innerText = places.length + " places total";
+
+      const tableBody = document.getElementById('places-table-body');
+      tableBody.innerHTML = "";
+
+      places.forEach(function (place) {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${place.name}</td>
+            <td>${place.state}</td>
+            <td>${place.city}</td>
+            <td>${place.category}</td>
+            <td>
+              <button class="edit-button" onclick="openEditModal('${place._id}')">Edit</button>
+              <button class="delete-button" onclick="deletePlace('${place._id}', '${place.name}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+    } catch (error) {
+      document.getElementById('status-message').innerText = "Couldn't load places. Is the server running?";
+      console.log("Error:", error);
+    }
+  }
+
+  async function createPlace() {
+    const name = document.getElementById('new-name').value;
+    const state = document.getElementById('new-state').value;
+    const city = document.getElementById('new-city').value;
+    const category = document.getElementById('new-category').value;
+    const description = document.getElementById('new-description').value;
+    const timings = document.getElementById('new-timings').value;
+    const entryFee = document.getElementById('new-entryfee').value;
+    const bestTime = document.getElementById('new-besttime').value;
+    const famousFood = document.getElementById('new-food').value;
+    const nearby = document.getElementById('new-nearby').value;
+    const transport = document.getElementById('new-transport').value;
+    const image1 = document.getElementById('new-image1').value;
+    const image2 = document.getElementById('new-image2').value;
+    const image3 = document.getElementById('new-image3').value;
+    // Turn the 3 boxes into one list, skipping any that were left empty
+    const images = [image1, image2, image3].filter(function (url) { return url.trim() !== ""; });
+    const image = images.length > 0 ? images[0] : "";
+
+    const messageBox = document.getElementById('form-message');
+
+    if (!name || !state || !city) {
+      messageBox.innerText = "Please fill in at least Name, State, and City.";
+      messageBox.className = "form-message bad";
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5050/api/places", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name, state, city, category, description,
+          timings, entryFee, bestTime, famousFood, nearby, transport, image, images
+        })
+      });
+
+      if (response.ok) {
+        messageBox.innerText = "Place added successfully!";
+        messageBox.className = "form-message good";
+
+        // Clear every field in the form
+        const fieldIds = ['new-name', 'new-state', 'new-city', 'new-description',
+                           'new-timings', 'new-entryfee', 'new-besttime',
+                           'new-food', 'new-nearby', 'new-transport',
+                           'new-image1', 'new-image2', 'new-image3'];
+        fieldIds.forEach(function (id) {
+          document.getElementById(id).value = "";
+        });
+
+        // Refresh the table so the new place shows up immediately
+        loadAllPlaces();
+      } else {
+        messageBox.innerText = "Something went wrong. Please try again.";
+        messageBox.className = "form-message bad";
+      }
+
+    } catch (error) {
+      messageBox.innerText = "Couldn't connect to the server.";
+      messageBox.className = "form-message bad";
+    }
+  }
+
+  async function deletePlace(id, name) {
+    const confirmed = confirm("Delete \"" + name + "\"? This cannot be undone.");
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5050/api/places/" + id, {
+        method: "DELETE"
+      });
+
+      if (response.ok) {
+        loadAllPlaces();
+      } else {
+        alert("Something went wrong deleting this place.");
+      }
+    } catch (error) {
+      alert("Couldn't connect to the server.");
+    }
+  }
+
+  // Opens the modal and fills every field with this place's CURRENT data
+  function openEditModal(id) {
+    const place = allPlacesCache.find(function (p) {
+      return p._id === id;
+    });
+
+    if (!place) {
+      alert("Couldn't find that place.");
+      return;
+    }
+
+    document.getElementById('edit-id').value = place._id;
+    document.getElementById('edit-name').value = place.name || "";
+    document.getElementById('edit-state').value = place.state || "";
+    document.getElementById('edit-city').value = place.city || "";
+    document.getElementById('edit-category').value = place.category || "Heritage";
+    document.getElementById('edit-description').value = place.description || "";
+    document.getElementById('edit-timings').value = place.timings || "";
+    document.getElementById('edit-entryfee').value = place.entryFee || "";
+    document.getElementById('edit-besttime').value = place.bestTime || "";
+    document.getElementById('edit-food').value = place.famousFood || "";
+    document.getElementById('edit-nearby').value = place.nearby || "";
+    document.getElementById('edit-transport').value = place.transport || "";
+
+    const images = place.images || [];
+    document.getElementById('edit-image1').value = images[0] || "";
+    document.getElementById('edit-image2').value = images[1] || "";
+    document.getElementById('edit-image3').value = images[2] || "";
+
+    document.getElementById('edit-message').innerText = "";
+    document.getElementById('edit-modal').classList.add('open');
+  }
+
+  function closeEditModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+  }
+
+  async function saveEdit() {
+    const id = document.getElementById('edit-id').value;
+    const messageBox = document.getElementById('edit-message');
+
+    const image1 = document.getElementById('edit-image1').value;
+    const image2 = document.getElementById('edit-image2').value;
+    const image3 = document.getElementById('edit-image3').value;
+    const images = [image1, image2, image3].filter(function (url) { return url.trim() !== ""; });
+
+    const updatedData = {
+      name: document.getElementById('edit-name').value,
+      state: document.getElementById('edit-state').value,
+      city: document.getElementById('edit-city').value,
+      category: document.getElementById('edit-category').value,
+      description: document.getElementById('edit-description').value,
+      timings: document.getElementById('edit-timings').value,
+      entryFee: document.getElementById('edit-entryfee').value,
+      bestTime: document.getElementById('edit-besttime').value,
+      famousFood: document.getElementById('edit-food').value,
+      nearby: document.getElementById('edit-nearby').value,
+      transport: document.getElementById('edit-transport').value,
+      image: images.length > 0 ? images[0] : "",
+      images: images
+    };
+
+    try {
+      const response = await fetch("http://localhost:5050/api/places/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData)
+      });
+
+      if (response.ok) {
+        closeEditModal();
+        loadAllPlaces();
+      } else {
+        messageBox.innerText = "Something went wrong. Please try again.";
+        messageBox.className = "form-message bad";
+      }
+    } catch (error) {
+      messageBox.innerText = "Couldn't connect to the server.";
+      messageBox.className = "form-message bad";
+    }
+  }
+
+  loadAllPlaces();
+
+</script>
+
+</body>
+</html>

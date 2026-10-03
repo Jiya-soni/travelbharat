@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelBharat - Explore</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+  :root {
+    --color-indigo: #1B2A45;
+    --color-indigo-deep: #121D33;
+    --color-marigold: #E0913C;
+    --color-cream: #FBF6EC;
+    --color-text-dark: #2A2418;
+    --color-text-light: #756C57;
+    --color-line: #DFD5BE;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-text-dark);
+  }
+
+  .page-header {
+    background-color: var(--color-indigo);
+    color: var(--color-cream);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .admin-link-btn {
+    background: var(--color-marigold);
+    color: var(--color-indigo-deep);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .signout-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .logo span {
+    color: var(--color-marigold);
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: #B9C2D4;
+  }
+
+  .content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .content h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .content > p.subtitle {
+    color: var(--color-text-light);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* ===============================================
+     SEARCH BAR
+     =============================================== */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 13px 16px 13px 42px;
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    background: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: var(--color-text-dark);
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-marigold);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ===============================================
+     REGION TABS
+     =============================================== */
+  .region-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .region-tab {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-light);
+    cursor: pointer;
+  }
+
+  .region-tab:hover {
+    border-color: var(--color-marigold);
+  }
+
+  .region-tab.active {
+    background: var(--color-indigo);
+    border-color: var(--color-indigo);
+    color: white;
+  }
+
+  /* ===============================================
+     STATE GRID - redesigned cards
+     =============================================== */
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 18px;
+  }
+
+  .state-card {
+    background-color: white;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Work Sans', sans-serif;
+    overflow: hidden;
+    padding: 0;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+    opacity: 0;
+    transform: translateY(10px);
+    animation: cardIn 0.45s ease forwards;
+  }
+
+  @keyframes cardIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .state-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px -12px rgba(27,42,69,0.25);
+  }
+
+  .state-card-band {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: flex-end;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .state-card-band::after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .state-card-band .state-name {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Fraunces', serif;
+    position: relative;
+    z-index: 1;
+  }
+
+  .state-card-body {
+    padding: 12px 16px 16px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .state-card-count {
+    font-size: 12px;
+    color: var(--color-text-light);
+  }
+
+  .state-card-arrow {
+    font-size: 13px;
+    color: var(--color-marigold);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .state-card:hover .state-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 14px;
+    padding: 40px 0;
+  }
+
+  /* ---- PLACES LIST ---- */
+  #places-section {
+    display: none;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    color: var(--color-text-light);
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 0;
+  }
+
+  .place-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  @keyframes rowIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .place-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid var(--color-line);
+    border-left: 4px solid var(--place-accent, var(--color-marigold));
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: left;
+    font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: rowIn 0.35s ease forwards;
+  }
+
+  .place-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 10px 22px -12px rgba(27,42,69,0.3);
+  }
+
+  .place-card-icon-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--place-accent-soft, #F1E9DA);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .place-card-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .place-card-top-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .place-card .place-name {
+    font-weight: 600;
+    font-size: 15px;
+    font-family: 'Fraunces', serif;
+  }
+
+  .place-card-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--place-accent, var(--color-marigold));
+    background: var(--place-accent-soft, #F1E9DA);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .place-card .place-info {
+    font-size: 12.5px;
+    color: var(--color-text-light);
+    margin-top: 4px;
+  }
+
+  .place-card-chevron {
+    font-size: 18px;
+    color: var(--color-line);
+    flex-shrink: 0;
+    transition: transform 0.16s ease, color 0.16s ease;
+  }
+
+  .place-card:hover .place-card-chevron {
+    transform: translateX(3px);
+    color: var(--color-marigold);
+  }
+
+  /* ---- PLACE DETAIL ---- */
+  #place-detail-section {
+    display: none;
+  }
+
+  .detail-back-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 24px 0 24px;
+  }
+
+  .detail-hero {
+    color: var(--color-cream);
+    padding: 56px 40px 40px 40px;
+    margin-top: 12px;
+    border-radius: 16px;
+  }
+
+  .detail-hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.16);
+    margin-bottom: 14px;
+  }
+
+  .detail-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .detail-hero-location {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  .detail-layout {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 36px 24px 60px 24px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .detail-story h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .detail-story p.detail-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--color-text-dark);
+    margin-bottom: 32px;
+  }
+
+  .detail-subsection {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px dashed var(--color-line);
+  }
+
+  .detail-subsection:last-child {
+    border-bottom: none;
+  }
+
+  .detail-subsection-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: var(--color-marigold);
+    margin-bottom: 8px;
+  }
+
+  .detail-subsection-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-text-dark);
+  }
+
+  .trip-card {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    padding: 24px;
+    position: sticky;
+    top: 24px;
+  }
+
+  .trip-card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--color-line);
+  }
+
+  .trip-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .trip-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .trip-row-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--color-cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .trip-row-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-text-light);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .trip-row-value {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-dark);
+  }
+
+  .coming-soon {
+    color: var(--color-text-light);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* ---- Bookmark button in the hero ---- */
+  .bookmark-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.16);
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .bookmark-btn:hover {
+    background: rgba(255,255,255,0.28);
+  }
+
+  .bookmark-btn.saved {
+    transform: scale(1.08);
+  }
+
+  /* ---- Quick stats strip, right under the hero ---- */
+  .quick-stats {
+    max-width: 1000px;
+    margin: -22px auto 0 auto;
+    padding: 0 48px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .quick-stat-chip {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--color-text-dark);
+    box-shadow: 0 8px 20px -10px rgba(27,42,69,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .quick-stat-chip b {
+    font-weight: 600;
+  }
+
+  /* ---- Sticky quick-nav tabs ---- */
+  .detail-nav-wrap {
+    position: sticky;
+    top: 0;
+    background: var(--color-cream);
+    z-index: 5;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .detail-nav {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    gap: 22px;
+  }
+
+  .detail-nav a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .detail-nav a:hover {
+    color: var(--color-text-dark);
+    border-bottom-color: var(--color-line);
+  }
+
+  /* ---- Gallery placeholder strip ---- */
+  .gallery-strip {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 10px;
+    height: 220px;
+    margin-bottom: 32px;
+  }
+
+  .gallery-tile {
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-line), #EFE7D8);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--color-text-light);
+    overflow: hidden;
+  }
+
+  .gallery-tile .g-icon {
+    font-size: 22px;
+    opacity: 0.6;
+  }
+
+  .gallery-tile .g-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+  }
+
+  /* ---- Entrance animation for detail content ---- */
+  @keyframes detailFadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .detail-story, .trip-card {
+    animation: detailFadeUp 0.4s ease both;
+  }
+
+  .trip-card {
+    animation-delay: 0.08s;
+  }
+
+  /* ===============================================
+     RESPONSIVE - TABLET (max-width: 720px)
+     =============================================== */
+  @media (max-width: 720px) {
+    .detail-layout {
+      grid-template-columns: 1fr;
+      padding: 28px 20px 48px 20px;
+    }
+    .trip-card {
+      position: static;
+    }
+    .gallery-strip {
+      grid-template-columns: 1fr 1fr;
+      height: 170px;
+    }
+    .quick-stats {
+      margin-top: -14px;
+      padding: 0 20px;
+    }
+    .detail-hero {
+      margin-left: 20px !important;
+      margin-right: 20px !important;
+      padding: 44px 24px 32px 24px;
+    }
+    .detail-hero h1 {
+      font-size: 28px;
+    }
+    .content {
+      padding: 24px 20px;
+    }
+    .state-grid, .place-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+    .detail-nav {
+      padding: 12px 20px;
+      overflow-x: auto;
+      gap: 16px;
+    }
+  }
+
+  /* ===============================================
+     RESPONSIVE - PHONE (max-width: 480px)
+     =============================================== */
+  @media (max-width: 480px) {
+    .page-header {
+      padding: 14px 20px;
+    }
+    .logo {
+      font-size: 17px;
+    }
+    .header-actions {
+      gap: 8px;
+    }
+    .header-subtitle {
+      display: none;   /* "Hi, Name" hidden on very small screens to save space */
+    }
+    .signout-btn, .admin-link-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .content h1 {
+      font-size: 22px;
+    }
+    .search-input {
+      font-size: 13px;
+      padding: 11px 14px 11px 38px;
+    }
+    .region-tab {
+      padding: 7px 12px;
+      font-size: 12px;
+    }
+    .state-grid, .place-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .state-card-band .state-name {
+      font-size: 13px;
+    }
+    .state-card-count, .state-card-arrow {
+      font-size: 11px;
+    }
+    .place-card {
+      padding: 12px 14px;
+      gap: 12px;
+    }
+    .place-card-icon-circle {
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+    }
+    .place-card .place-name {
+      font-size: 13.5px;
+    }
+    .place-card-badge {
+      font-size: 9px;
+      padding: 2px 7px;
+    }
+    .detail-hero {
+      padding: 36px 18px 26px 18px;
+      margin-left: 14px !important;
+      margin-right: 14px !important;
+    }
+    .detail-hero h1 {
+      font-size: 23px;
+    }
+    .detail-hero-location {
+      font-size: 12.5px;
+    }
+    .bookmark-btn {
+      width: 36px;
+      height: 36px;
+      font-size: 15px;
+      top: 16px;
+      right: 16px;
+    }
+    .quick-stats {
+      padding: 0 14px;
+    }
+    .quick-stat-chip {
+      font-size: 11px;
+      padding: 8px 12px;
+    }
+    .gallery-strip {
+      height: 130px;
+      gap: 8px;
+    }
+    .trip-card {
+      padding: 18px;
+    }
+    .trip-row-value, .detail-subsection-text, .detail-text {
+      font-size: 13px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div class="logo">Travel<span>Bharat</span></div>
+    <div class="header-actions">
+      <a href="favorites.html" class="admin-link-btn" style="background:none; border:1px solid rgba(255,255,255,0.3); color:white;">&#9829; My Favorites</a>
+      <a href="admin.html" id="admin-link" class="admin-link-btn" style="display:none;">Admin Panel</a>
+      <span class="header-subtitle" id="header-username">Signed in</span>
+      <button onclick="signOut()" class="signout-btn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div id="states-section">
+      <h1>Choose a State</h1>
+      <p class="subtitle" id="loading-message">Loading destinations...</p>
+
+      <div id="browse-controls" style="display:none;">
+        <div class="search-wrap">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" class="search-input" id="search-input" placeholder="Search for a state...">
+        </div>
+
+        <div class="region-tabs" id="region-tabs">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <div class="state-grid" id="state-grid">
+      </div>
+    </div>
+
+    <div id="places-section">
+      <button class="back-button" onclick="showStates()">&larr; Back to states</button>
+      <h1 id="places-title">Places</h1>
+      <p class="subtitle" id="places-subtitle"></p>
+
+      <div class="place-list" id="places-list">
+      </div>
+    </div>
+
+  </div>
+
+  <div id="place-detail-section">
+    <div class="detail-back-wrap">
+      <button class="back-button" onclick="showPlacesAgain()">&larr; Back to places</button>
+    </div>
+
+    <div class="detail-hero" id="detail-hero" style="margin-left:24px; margin-right:24px; position:relative;">
+      <button class="bookmark-btn" id="bookmark-btn" onclick="toggleBookmark(this)">&#9825;</button>
+      <span class="detail-hero-tag" id="detail-category"></span>
+      <h1 id="detail-name"></h1>
+      <p class="detail-hero-location" id="detail-location"></p>
+    </div>
+
+    <div class="quick-stats" id="quick-stats">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="detail-nav-wrap">
+      <div class="detail-nav">
+        <a href="#section-about">About</a>
+        <a href="#section-gallery">Gallery</a>
+        <a href="#section-more">Food &amp; Nearby</a>
+      </div>
+    </div>
+
+    <div class="detail-layout">
+      <div class="detail-story" id="detail-story">
+      </div>
+      <div class="trip-card" id="trip-card">
+      </div>
+    </div>
+  </div>
+
+
+<script>
+
+  // Each state now also has a "region" - used for the region tabs.
+  const stateList = [
+    { name: "Punjab", color: "#4C6B8E", region: "North", image: "https://images.unsplash.com/photo-1757552528834-09a6e8c7c9ed?w=800&q=80&auto=format&fit=crop" },
+    { name: "Haryana", color: "#6C7A89", region: "North", image: "https://plus.unsplash.com/premium_photo-1697730464803-fcede713753e?q=80&w=2065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Himachal Pradesh", color: "#3B6E91", region: "North", image: "https://images.unsplash.com/photo-1655470062377-ef3f5161960a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Rajasthan", color: "#B5533C", region: "North", image: " https://plus.unsplash.com/premium_photo-1697730421382-bc8dd92f83ba?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+
+    { name: "Uttar Pradesh", color: "#A87C3C", region: "Central", image:"https://images.unsplash.com/photo-1658313286353-81f8cf3a328a?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Uttarakhand", color: "#4C8E6B", region: "Central", image: "https://images.unsplash.com/photo-1718528565878-7fd7c72f5196?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Madhya Pradesh", color: "#A85C4C", region: "Central", image: "https://plus.unsplash.com/premium_photo-1661963839850-b4be117aff11?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Chhattisgarh", color: "#5E7C6A", region: "Central", image: "https://images.unsplash.com/photo-1673462107499-97848ff888b9?q=80&w=1036&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+
+    { name: "Bihar", color: "#8E5B3F", region: "East", image: "https://images.unsplash.com/photo-1725951602381-3e759a5ce430?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Jharkhand", color: "#9C6B4A", region: "East", image: "https://images.unsplash.com/photo-1596103399853-6b41f3fad275?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Odisha", color: "#C17A3C", region: "East", image: " https://images.unsplash.com/photo-1723871568897-d0680195f20a?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "West Bengal", color: "#6B4C4C", region: "East", image: "https://images.unsplash.com/photo-1724650965526-4ab37c60a3f9?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+
+    { name: "Goa", color: "#D98E4A", region: "West", image: "https://images.unsplash.com/photo-1652820330085-82a0c2b88d78?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Gujarat", color: "#7C6A8E", region: "West", image: "https://images.unsplash.com/photo-1620103143245-9efb3e4a7553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Maharashtra", color: "#B5533C", region: "West", image: " https://images.unsplash.com/photo-1595658658481-d53d3f999875?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+
+    { name: "Andhra Pradesh", color: "#C1666B", region: "South", image: "https://images.unsplash.com/photo-1707833711203-7b37bdeb73b6?q=80&w=2231&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Karnataka", color: "#4A7A8C", region: "South", image: "https://plus.unsplash.com/premium_photo-1697730337612-8bd916249e30?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Kerala", color: "#2E7D5B", region: "South" , image: "https://images.unsplash.com/photo-1677475455506-1e429162f44f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D "},
+    { name: "Tamil Nadu", color: "#8E4C4C", region: "South", image: "https://images.unsplash.com/photo-1625807161536-27903f2200fa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Telangana", color: "#4C6B4C", region: "South", image: " https://images.unsplash.com/photo-1560237606-f82b6cb1ebbf?q=80&w=2178&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+
+    { name: "Assam", color: "#7A6C4C", region: "Northeast", image: " https://images.unsplash.com/photo-1615472910606-9d4f7291944f?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { name: "Arunachal Pradesh", color: "#4C7A5D", region: "Northeast", image: "https://images.unsplash.com/photo-1566728059008-079a722420d7?q=80&w=1675&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Manipur", color: "#6B8E4C", region: "Northeast", image: "https://plus.unsplash.com/premium_photo-1713375115181-edb9c7e7b379?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Meghalaya", color: "#4C8E7A", region: "Northeast", image: "https://images.unsplash.com/photo-1742494267580-e026d3737f65?q=80&w=1676&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Mizoram", color: "#8E6B7A", region: "Northeast", image: "https://images.unsplash.com/photo-1652792595182-427510e8644f?q=80&w=2232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Nagaland", color: "#7A4C6B", region: "Northeast", image: "https://images.unsplash.com/photo-1700042629181-e6b100894f6f?q=80&w=2038&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Sikkim", color: "#6B4C8E", region: "Northeast", image: "https://images.unsplash.com/photo-1573398643956-2b9e6ade3456?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " },
+    { name: "Tripura", color: "#7A8E4C", region: "Northeast", image: "https://images.unsplash.com/photo-1695150854909-a00039a284b8?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D " }
+  ];
+
+  const regions = ["All", "North", "South", "East", "West", "Central", "Northeast"];
+
+  // Check who's logged in, and show their name in the header.
+  // (This page itself isn't restricted - anyone signed in can browse -
+  // but we still want to know who's here and offer a way to sign out.)
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+  if (loggedInUser) {
+    document.getElementById('header-username').innerText = "Hi, " + loggedInUser.name;
+
+    // Only admins see the Admin Panel link - everyone else never notices it exists
+    if (loggedInUser.isAdmin) {
+      document.getElementById('admin-link').style.display = 'inline-block';
+    }
+
+    // Fetch this user's current favorites once, so bookmark hearts
+    // show the correct filled/empty state without needing a fresh login
+    fetch("http://localhost:5050/api/users/" + loggedInUser.id + "/favorites")
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        loggedInUser.favorites = data.favorites;
+      })
+      .catch(function (error) {
+        console.log("Couldn't load favorites:", error);
+      });
+  }
+
+  function signOut() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+  }
+
+  let stateData = {};
+  let currentRegion = "All";
+  let currentSearch = "";
+
+  function getStateColor(stateName) {
+    const found = stateList.find(function (s) { return s.name === stateName; });
+    return found ? found.color : "#1B2A45";
+  }
+
+  // Builds the region tab buttons once, at the start
+  function buildRegionTabs() {
+    const tabsBox = document.getElementById('region-tabs');
+    tabsBox.innerHTML = "";
+    regions.forEach(function (region) {
+      const activeClass = (region === currentRegion) ? "region-tab active" : "region-tab";
+      tabsBox.innerHTML += `<button class="${activeClass}" onclick="setRegion('${region}')">${region}</button>`;
+    });
+  }
+
+  function setRegion(region) {
+    currentRegion = region;
+    buildRegionTabs();
+    renderStateGrid();
+  }
+
+  // Redraws the state grid based on current search text + region
+  function renderStateGrid() {
+    const grid = document.getElementById('state-grid');
+    grid.innerHTML = "";
+
+    const filtered = stateList.filter(function (state) {
+      const matchesRegion = (currentRegion === "All") || (state.region === currentRegion);
+      const matchesSearch = state.name.toLowerCase().includes(currentSearch.toLowerCase());
+      return matchesRegion && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="no-results">No states match "${currentSearch}"</div>`;
+      return;
+    }
+
+    filtered.forEach(function (state, index) {
+      const placesInState = stateData[state.name] || [];
+      // If this state has a real photo, use it as the background.
+      // Otherwise, fall back to the colored gradient - so nothing breaks
+      // for states we haven't added a photo for yet.
+      let bandStyle;
+      if (state.image) {
+        bandStyle = `background-image: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.6)), url('${state.image}'); background-size: cover; background-position: center;`;
+      } else {
+        bandStyle = `background: linear-gradient(135deg, ${state.color}, var(--color-indigo-deep));`;
+      }
+
+      grid.innerHTML += `
+        <button class="state-card" style="animation-delay:${index * 0.03}s" onclick="showPlaces('${state.name}')">
+          <div class="state-card-band" style="${bandStyle}">
+            <div class="state-name">${state.name}</div>
+          </div>
+          <div class="state-card-body">
+            <div class="state-card-count">${placesInState.length} places</div>
+            <div class="state-card-arrow">Explore &rarr;</div>
+          </div>
+        </button>
+      `;
+    });
+  }
+
+  // Each category gets its own accent color + soft background,
+  // used for the row's left bar, icon circle, and badge.
+  function categoryColors(category) {
+    if (category === "Heritage") return { accent: "#A87C3C", soft: "#F3E6D3" };
+    if (category === "Nature") return { accent: "#2E7D5B", soft: "#DEEFE5" };
+    if (category === "Religious") return { accent: "#6B4C8E", soft: "#E9E0F2" };
+    if (category === "Adventure") return { accent: "#B5533C", soft: "#F3DFD8" };
+    return { accent: "#4A7A8C", soft: "#DEEAEE" };
+  }
+
+  function showPlaces(stateName) {
+    document.getElementById('states-section').style.display = 'none';
+    document.getElementById('places-section').style.display = 'block';
+
+    document.getElementById('places-title').innerText = stateName;
+    document.getElementById('places-subtitle').innerText =
+      "Tourist places in " + stateName;
+
+    const places = stateData[stateName];
+    const listBox = document.getElementById('places-list');
+    listBox.innerHTML = "";
+
+    places.forEach(function (place, index) {
+      const colors = categoryColors(place.category);
+      listBox.innerHTML += `
+        <button class="place-card"
+                style="--place-accent:${colors.accent}; --place-accent-soft:${colors.soft}; animation-delay:${index * 0.04}s;"
+                onclick='showPlaceDetail("${stateName}", "${place.name}")'>
+          <div class="place-card-icon-circle">${categoryIcon(place.category)}</div>
+          <div class="place-card-main">
+            <div class="place-card-top-row">
+              <span class="place-name">${place.name}</span>
+              <span class="place-card-badge">${place.category}</span>
+            </div>
+            <div class="place-info">${place.city}</div>
+          </div>
+          <div class="place-card-chevron">&rsaquo;</div>
+        </button>
+      `;
+    });
+  }
+
+  function showStates() {
+    document.getElementById('places-section').style.display = 'none';
+    document.getElementById('states-section').style.display = 'block';
+  }
+
+  function categoryIcon(category) {
+    if (category === "Heritage") return "&#127963;&#65039;";
+    if (category === "Nature") return "&#127807;";
+    if (category === "Religious") return "&#128717;";
+    if (category === "Adventure") return "&#9968;&#65039;";
+    return "&#128205;";
+  }
+
+  // Builds up to 3 gallery tiles for a place.
+  // Priority: use the "images" list if it has entries.
+  // If that's empty, fall back to the single "image" field (older places).
+  // Any remaining empty slots become "coming soon" placeholders.
+  function buildGalleryTiles(place) {
+    let photos = [];
+
+    if (place.images && place.images.length > 0) {
+      photos = place.images;
+    } else if (place.image) {
+      photos = [place.image];
+    }
+
+    let tilesHtml = "";
+
+    for (let i = 0; i < 3; i++) {
+      if (photos[i]) {
+        tilesHtml += `<div class="gallery-tile" style="background-image:url('${photos[i]}'); background-size:cover; background-position:center 75%;"></div>`;
+      } else if (i === 0) {
+        tilesHtml += `<div class="gallery-tile"><span class="g-icon">${categoryIcon(place.category)}</span><span class="g-label">Photo coming soon</span></div>`;
+      } else {
+        tilesHtml += `<div class="gallery-tile"><span class="g-icon">&#128247;</span><span class="g-label">More photos coming soon</span></div>`;
+      }
+    }
+
+    return tilesHtml;
+  }
+
+  // Keeps track of which place is currently open, so the bookmark
+  // button knows which place ID to save/remove
+  let currentPlaceId = null;
+
+  async function toggleBookmark(button) {
+    if (!loggedInUser || !currentPlaceId) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5050/api/users/" + loggedInUser.id + "/favorites/" + currentPlaceId,
+        { method: "POST" }
+      );
+      const data = await response.json();
+
+      if (data.saved) {
+        button.classList.add('saved');
+        button.innerHTML = "&#9829;";
+      } else {
+        button.classList.remove('saved');
+        button.innerHTML = "&#9825;";
+      }
+
+    } catch (error) {
+      console.log("Error saving favorite:", error);
+    }
+  }
+
+  function showPlaceDetail(stateName, placeName) {
+    const places = stateData[stateName];
+    const place = places.find(function (p) {
+      return p.name === placeName;
+    });
+
+    document.getElementById('states-section').style.display = 'none';
+    document.getElementById('places-section').style.display = 'none';
+    document.getElementById('place-detail-section').style.display = 'block';
+    window.scrollTo(0, 0);
+
+    const color = getStateColor(stateName);
+    const heroBox = document.getElementById('detail-hero');
+
+    // Hero stays a plain color gradient - no photo here, so the
+    // title text is never sitting on top of a busy background.
+    heroBox.style.background =
+      `linear-gradient(160deg, ${color} 0%, var(--color-indigo-deep) 130%)`;
+
+    document.getElementById('detail-category').innerText = place.category;
+    document.getElementById('detail-name').innerText = place.name;
+    document.getElementById('detail-location').innerText = place.city + ", " + stateName;
+
+    // Remember which place this is, so the bookmark button knows what to save
+    currentPlaceId = place._id;
+
+    // Set the heart to match whether this place is already a favorite
+    const bookmarkBtn = document.getElementById('bookmark-btn');
+    if (loggedInUser && loggedInUser.favorites && loggedInUser.favorites.includes(place._id)) {
+      bookmarkBtn.classList.add('saved');
+      bookmarkBtn.innerHTML = "&#9829;";
+    } else {
+      bookmarkBtn.classList.remove('saved');
+      bookmarkBtn.innerHTML = "&#9825;";
+    }
+
+    // Quick stats strip right under the hero
+    document.getElementById('quick-stats').innerHTML = `
+      <div class="quick-stat-chip">${categoryIcon(place.category)} <b>${place.category}</b></div>
+      <div class="quick-stat-chip">&#128205; ${place.city}</div>
+      ${place.bestTime ? `<div class="quick-stat-chip">&#128197; Best: <b>${place.bestTime}</b></div>` : ""}
+    `;
+
+    const story = document.getElementById('detail-story');
+    const tripCard = document.getElementById('trip-card');
+
+    if (place.description) {
+      story.innerHTML = `
+        <div id="section-about">
+          <h2>About</h2>
+          <p class="detail-text">${place.description}</p>
+        </div>
+
+        <div id="section-gallery">
+          <h2 style="margin-bottom:14px;">Gallery</h2>
+          <div class="gallery-strip">
+            ${buildGalleryTiles(place)}
+          </div>
+        </div>
+
+        <div id="section-more">
+          <div class="detail-subsection">
+            <div class="detail-subsection-label">Famous Food</div>
+            <div class="detail-subsection-text">${place.famousFood}</div>
+          </div>
+
+          <div class="detail-subsection">
+            <div class="detail-subsection-label">Nearby Attractions</div>
+            <div class="detail-subsection-text">${place.nearby}</div>
+          </div>
+        </div>
+      `;
+
+      tripCard.innerHTML = `
+        <div class="trip-card-title">Trip Details</div>
+
+        <div class="trip-row">
+          <div class="trip-row-icon">${categoryIcon(place.category)}</div>
+          <div>
+            <div class="trip-row-label">Best Time to Visit</div>
+            <div class="trip-row-value">${place.bestTime}</div>
+          </div>
+        </div>
+
+        <div class="trip-row">
+          <div class="trip-row-icon">&#128337;</div>
+          <div>
+            <div class="trip-row-label">Timings</div>
+            <div class="trip-row-value">${place.timings}</div>
+          </div>
+        </div>
+
+        <div class="trip-row">
+          <div class="trip-row-icon">&#127903;&#65039;</div>
+          <div>
+            <div class="trip-row-label">Entry Fee</div>
+            <div class="trip-row-value">${place.entryFee}</div>
+          </div>
+        </div>
+
+        <div class="trip-row">
+          <div class="trip-row-icon">&#128652;</div>
+          <div>
+            <div class="trip-row-label">How to Reach</div>
+            <div class="trip-row-value">${place.transport}</div>
+          </div>
+        </div>
+      `;
+    } else {
+      document.getElementById('quick-stats').innerHTML = "";
+      story.innerHTML = `<p class="coming-soon">Full details for this place are coming soon.</p>`;
+      tripCard.innerHTML = `<div class="trip-card-title">Trip Details</div><p class="coming-soon">Coming soon.</p>`;
+    }
+  }
+
+  function showPlacesAgain() {
+    document.getElementById('place-detail-section').style.display = 'none';
+    document.getElementById('places-section').style.display = 'block';
+  }
+
+  async function loadStates() {
+    try {
+      const response = await fetch("http://localhost:5050/api/places");
+      const allPlaces = await response.json();
+
+      allPlaces.forEach(function (place) {
+        // Match this place's state to our official stateList names,
+        // ignoring capitalization - so "punjab", "PUNJAB", or "Punjab"
+        // all correctly land under the same "Punjab" bucket.
+        const matchedState = stateList.find(function (s) {
+          return s.name.toLowerCase() === place.state.toLowerCase().trim();
+        });
+        const groupName = matchedState ? matchedState.name : place.state;
+
+        if (!stateData[groupName]) {
+          stateData[groupName] = [];
+        }
+        stateData[groupName].push(place);
+      });
+
+      document.getElementById('loading-message').style.display = 'none';
+      document.getElementById('browse-controls').style.display = 'block';
+
+      buildRegionTabs();
+      renderStateGrid();
+
+      // If this page was opened with ?state=...&place=... in the address bar
+      // (like when clicking a card on the Favorites page), jump straight
+      // to that place's detail page instead of showing the states grid.
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetState = urlParams.get('state');
+      const targetPlace = urlParams.get('place');
+
+      if (targetState && targetPlace && stateData[targetState]) {
+        showPlaces(targetState);
+        showPlaceDetail(targetState, targetPlace);
+      }
+
+    } catch (error) {
+      document.getElementById('loading-message').innerText = "Couldn't load destinations. Is the server running?";
+      console.log("Error fetching places:", error);
+    }
+  }
+
+  // Search box: re-render the grid every time the user types
+  document.getElementById('search-input').addEventListener('input', function (e) {
+    currentSearch = e.target.value;
+    renderStateGrid();
+  });
+
+  loadStates();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelBharat - Sign In</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+  :root {
+    --color-indigo: #1B2A45;
+    --color-indigo-deep: #121D33;
+    --color-marigold: #E0913C;
+    --color-cream: #FBF6EC;
+    --color-text-dark: #2A2418;
+    --color-text-light: #756C57;
+    --color-line: #DFD5BE;
+    --color-good: #3E7C5A;
+    --color-bad: #B5533C;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: #121D33;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  @keyframes cardEnter {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .login-box {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    min-height: 550px;
+    border-radius: 20px;
+    overflow: hidden;
+    animation: cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .left-side {
+    background:
+      radial-gradient(circle at 20% 15%, rgba(224,145,60,0.14), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(224,145,60,0.10), transparent 40%),
+      linear-gradient(155deg, var(--color-indigo) 0%, var(--color-indigo-deep) 100%);
+    color: var(--color-cream);
+    flex: 1;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .route-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .small-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-marigold);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .left-side h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.5px;
+  }
+
+  .left-side h1 span {
+    color: var(--color-marigold);
+    font-style: italic;
+  }
+
+  .left-side p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #E9E4D8;
+    max-width: 260px;
+  }
+
+  .dotted-line {
+    border-top: 1px dashed rgba(255,255,255,0.35);
+    margin: 20px 0;
+  }
+
+  .right-side {
+    background-color: var(--color-cream);
+    flex: 1.1;
+    padding: 50px 45px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tab-buttons {
+    position: relative;
+    display: flex;
+    gap: 25px;
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: 30px;
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    padding-bottom: 12px;
+    cursor: pointer;
+  }
+
+  .tab-button.active {
+    color: var(--color-text-dark);
+  }
+
+  .tab-underline {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: var(--color-marigold);
+    transition: left 0.25s ease, width 0.25s ease;
+  }
+
+  .form-box {
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .form-box.active {
+    display: flex;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
+    font-weight: 600;
+  }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1.5px solid var(--color-line);
+    border-radius: 12px;
+    padding: 0 14px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .input-wrap:focus-within {
+    border-color: var(--color-marigold);
+    box-shadow: 0 0 0 4px rgba(224,145,60,0.15);
+  }
+
+  .input-icon {
+    font-size: 15px;
+    opacity: 0.5;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .input-wrap input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    color: var(--color-text-dark);
+    padding: 13px 0;
+    font-family: 'Work Sans', sans-serif;
+    min-width: 0;
+  }
+
+  .input-wrap input:focus {
+    outline: none;
+  }
+
+  .input-wrap input:-webkit-autofill,
+  .input-wrap input:-webkit-autofill:hover,
+  .input-wrap input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+    -webkit-text-fill-color: var(--color-text-dark);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .toggle-eye {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    opacity: 0.5;
+    padding: 0;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
+  .toggle-eye:hover {
+    opacity: 0.85;
+  }
+
+  .two-column {
+    display: flex;
+    gap: 15px;
+  }
+  .two-column .input-group {
+    flex: 1;
+  }
+
+  .match-message {
+    font-size: 12px;
+    min-height: 14px;
+    margin-top: -8px;
+  }
+  .match-message.good { color: var(--color-good); }
+  .match-message.bad { color: var(--color-bad); }
+
+  .main-button {
+    margin-top: 10px;
+    background-color: var(--color-indigo);
+    color: var(--color-cream);
+    border: none;
+    border-radius: 30px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 20px -8px rgba(27,42,69,0.6);
+  }
+
+  .main-button:hover {
+    background-color: #101a2e;
+    box-shadow: 0 10px 26px -6px rgba(27,42,69,0.7);
+    transform: translateY(-1px);
+  }
+
+  .main-button:active {
+    transform: scale(0.98) translateY(0);
+  }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    display: none;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .switch-text {
+    text-align: center;
+    font-size: 12px;
+    color: var(--color-text-light);
+    margin-top: 20px;
+  }
+
+  .switch-text button {
+    background: none;
+    border: none;
+    color: var(--color-marigold);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  @media (max-width: 700px) {
+    .left-side {
+      display: none;
+    }
+    body {
+      padding: 20px 16px;
+    }
+    .login-box {
+      min-height: auto;
+      border-radius: 16px;
+    }
+    .right-side {
+      padding: 36px 24px;
+    }
+    .tab-buttons {
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .two-column {
+      flex-direction: column;
+      gap: 18px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .right-side {
+      padding: 28px 18px;
+    }
+    .tab-button {
+      font-size: 13px;
+    }
+    .input-wrap input {
+      font-size: 14px;
+    }
+    .main-button {
+      font-size: 13px;
+      padding: 13px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="login-box">
+
+  <div class="left-side">
+    <svg class="route-art" viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M40 500 C 130 440, 90 340, 190 300 S 310 190, 270 80" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="none" stroke-dasharray="1 8" stroke-linecap="round"/>
+      <circle cx="40" cy="500" r="4.5" fill="var(--color-marigold)"/>
+      <circle cx="270" cy="80" r="4.5" fill="var(--color-marigold)" opacity="0.55"/>
+      <circle cx="190" cy="300" r="3" fill="rgba(255,255,255,0.4)"/>
+    </svg>
+    <div>
+      <div class="small-label">TravelBharat</div>
+      <h1>One key to<br><span>every state</span><br>of India.</h1>
+    </div>
+
+    <div>
+      <div class="dotted-line"></div>
+      <p>Sign in once, then explore heritage, nature, and pilgrim trails from Kashmir to Kanyakumari — no need to log in again.</p>
+    </div>
+  </div>
+
+  <div class="right-side">
+
+    <div class="tab-buttons" id="tab-buttons">
+      <button class="tab-button active" data-tab="signin" onclick="showForm('signin')">Sign In</button>
+      <button class="tab-button" data-tab="register" onclick="showForm('register')">Register</button>
+      <span class="tab-underline" id="tab-underline"></span>
+    </div>
+
+    <!-- SIGN IN FORM -->
+    <form class="form-box active" id="signin-form">
+      <div class="input-group">
+        <label for="signin-email">Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">&#9993;&#65039;</span>
+          <input type="email" id="signin-email" placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="signin-password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">&#128274;</span>
+          <input type="password" id="signin-password" placeholder="••••••••">
+          <button type="button" class="toggle-eye" onclick="togglePassword('signin-password', this)">&#128065;</button>
+        </div>
+      </div>
+      <button type="button" class="main-button" onclick="handleLogin(this)">
+        <span class="btn-label">Sign In &rarr;</span>
+        <span class="spinner"></span>
+      </button>
+      <p class="switch-text">
+        New here? <button type="button" onclick="showForm('register')">Create an account</button>
+      </p>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form class="form-box" id="register-form">
+      <div class="input-group">
+        <label for="register-name">Full Name</label>
+        <div class="input-wrap">
+          <span class="input-icon">&#128100;</span>
+          <input type="text" id="register-name" placeholder="Aarav Sharma">
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="register-email">Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">&#9993;&#65039;</span>
+          <input type="email" id="register-email" placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="two-column">
+        <div class="input-group">
+          <label for="register-password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">&#128274;</span>
+            <input type="password" id="register-password" placeholder="••••••••" oninput="checkMatch()">
+            <button type="button" class="toggle-eye" onclick="togglePassword('register-password', this)">&#128065;</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="register-confirm">Confirm</label>
+          <div class="input-wrap">
+            <span class="input-icon">&#128274;</span>
+            <input type="password" id="register-confirm" placeholder="••••••••" oninput="checkMatch()">
+            <button type="button" class="toggle-eye" onclick="togglePassword('register-confirm', this)">&#128065;</button>
+          </div>
+        </div>
+      </div>
+      <p class="match-message" id="match-message"></p>
+      <button type="button" class="main-button" onclick="handleRegister(this)">
+        <span class="btn-label">Create Account &rarr;</span>
+        <span class="spinner"></span>
+      </button>
+      <p class="switch-text">
+        Already registered? <button type="button" onclick="showForm('signin')">Sign in instead</button>
+      </p>
+    </form>
+
+  </div>
+</div>
+
+
+<script>
+
+  function moveUnderline(tabButton) {
+    const underline = document.getElementById('tab-underline');
+    underline.style.width = tabButton.offsetWidth + "px";
+    underline.style.left = tabButton.offsetLeft + "px";
+  }
+
+  function showForm(formName) {
+    document.getElementById('signin-form').classList.remove('active');
+    document.getElementById('register-form').classList.remove('active');
+
+    const buttons = document.querySelectorAll('.tab-button');
+    buttons.forEach(function (button) {
+      button.classList.remove('active');
+    });
+
+    if (formName === 'signin') {
+      document.getElementById('signin-form').classList.add('active');
+      buttons[0].classList.add('active');
+      moveUnderline(buttons[0]);
+    } else {
+      document.getElementById('register-form').classList.add('active');
+      buttons[1].classList.add('active');
+      moveUnderline(buttons[1]);
+    }
+  }
+
+  window.addEventListener('load', function () {
+    moveUnderline(document.querySelectorAll('.tab-button')[0]);
+  });
+
+  function togglePassword(inputId, eyeButton) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      eyeButton.innerHTML = "&#128064;&#65039;";
+    } else {
+      input.type = "password";
+      eyeButton.innerHTML = "&#128065;";
+    }
+  }
+
+  function checkMatch() {
+    const pass = document.getElementById('register-password').value;
+    const confirm = document.getElementById('register-confirm').value;
+    const message = document.getElementById('match-message');
+
+    if (confirm.length === 0) {
+      message.innerText = "";
+      message.className = "match-message";
+      return;
+    }
+
+    if (pass === confirm) {
+      message.innerText = "Passwords match";
+      message.className = "match-message good";
+    } else {
+      message.innerText = "Passwords do not match";
+      message.className = "match-message bad";
+    }
+  }
+
+  // ---- REAL registration logic, connected to the server ----
+  async function handleRegister(button) {
+    const label = button.querySelector('.btn-label');
+    const spinner = button.querySelector('.spinner');
+
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirm = document.getElementById('register-confirm').value;
+
+    if (password !== confirm) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    label.style.display = 'none';
+    spinner.style.display = 'inline-block';
+    button.disabled = true;
+
+    try {
+      const response = await fetch("http://localhost:5050/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, email: email, password: password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Account created! You can now sign in.");
+        showForm('signin');
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      alert("Couldn't connect to the server. Is it running?");
+    }
+
+    label.style.display = 'inline';
+    spinner.style.display = 'none';
+    button.disabled = false;
+  }
+
+  // ---- REAL sign-in logic, connected to the server ----
+  async function handleLogin(button) {
+    const label = button.querySelector('.btn-label');
+    const spinner = button.querySelector('.spinner');
+
+    const email = document.getElementById('signin-email').value;
+    const password = document.getElementById('signin-password').value;
+
+    label.style.display = 'none';
+    spinner.style.display = 'inline-block';
+    button.disabled = true;
+
+    try {
+      const response = await fetch("http://localhost:5050/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        window.location.href = "explore.html";
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      alert("Couldn't connect to the server. Is it running?");
+    }
+
+    label.style.display = 'inline';
+    spinner.style.display = 'none';
+    button.disabled = false;
+  }
+
+</script>
+
+</body>
+</html>
