@@ -58,7 +58,7 @@ function Admin() {
 
   async function loadAllPlaces() {
     try {
-      const response = await fetch("http://localhost:5050/api/places");
+      const response = await fetch("https://travelbharat-1irh.onrender.com/api/places");
       const data = await response.json();
       setPlaces(data);
       setStatusMessage(data.length + " places total");
@@ -78,7 +78,7 @@ function Admin() {
     if (!confirmed) return;
 
     try {
-      const response = await fetch("http://localhost:5050/api/places/" + id, {
+      const response = await fetch("https://travelbharat-1irh.onrender.com/api/places/" + id, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -126,7 +126,7 @@ function Admin() {
     };
 
     try {
-      const response = await fetch("http://localhost:5050/api/places/" + editId, {
+      const response = await fetch("https://travelbharat-1irh.onrender.com/api/places/" + editId, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),
@@ -160,7 +160,7 @@ function Admin() {
     const image = images.length > 0 ? images[0] : "";
 
     try {
-      const response = await fetch("http://localhost:5050/api/places", {
+      const response = await fetch("https://travelbharat-1irh.onrender.com/api/places", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

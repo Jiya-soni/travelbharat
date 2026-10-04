@@ -61,7 +61,7 @@ function Explore() {
     }
     setLoggedInUser(user);
 
-    fetch("http://localhost:5050/api/places")
+    fetch("https://travelbharat-1irh.onrender.com/api/places")
       .then((res) => res.json())
       .then((places) => {
         setAllPlaces(places);

@@ -37,7 +37,7 @@ function Favorites() {
 
   async function loadFavorites(user) {
     try {
-      const response = await fetch(`http://localhost:5050/api/users/${user.id}/favorites/full`);
+      const response = await fetch(`https://travelbharat-1irh.onrender.com/api/users/${user.id}/favorites/full`);
       const data = await response.json();
       setPlaces(data);
 
@@ -54,7 +54,7 @@ function Favorites() {
 
   async function removeFavorite(placeId) {
     try {
-      await fetch(`http://localhost:5050/api/users/${loggedInUser.id}/favorites/${placeId}`, {
+      await fetch(`https://travelbharat-1irh.onrender.com/api/users/${loggedInUser.id}/favorites/${placeId}`, {
         method: "POST",
       });
       loadFavorites(loggedInUser);

@@ -38,7 +38,7 @@ function PlaceDetail() {
     }
     setLoggedInUser(user);
 
-    fetch("http://localhost:5050/api/places")
+    fetch("https://travelbharat-1irh.onrender.com/api/places")
       .then((res) => res.json())
       .then((allPlaces) => {
         const found = allPlaces.find(
@@ -51,7 +51,7 @@ function PlaceDetail() {
 
         // Check if this place is already in the user's favorites
         if (found) {
-          fetch(`http://localhost:5050/api/users/${user.id}/favorites`)
+          fetch(`https://travelbharat-1irh.onrender.com/api/users/${user.id}/favorites`)
             .then((res) => res.json())
             .then((data) => {
               setIsSaved(data.favorites.includes(found._id));
@@ -74,7 +74,7 @@ function PlaceDetail() {
     if (!loggedInUser || !place) return;
     try {
       const response = await fetch(
-        `http://localhost:5050/api/users/${loggedInUser.id}/favorites/${place._id}`,
+        `https://travelbharat-1irh.onrender.com/api/users/${loggedInUser.id}/favorites/${place._id}`,
         { method: "POST" }
       );
       const data = await response.json();
